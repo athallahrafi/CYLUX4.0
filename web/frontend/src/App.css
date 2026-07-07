@@ -1,0 +1,23 @@
+.app-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: left;
+}
+
+.status-badge {
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+section {
+  margin-bottom: 1.5rem;
+}
+
+pre {
+  background: #1e1e1e;
+  color: #d4d4d4;
+  padding: 1rem;
+  border-radius: 8px;
+  overflow-x: auto;
+}
