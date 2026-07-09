@@ -11,6 +11,12 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 const int pinAnalog = A0;
 const int pinDigital = 2; // D2
 
+// Pin Pompa Peristaltik
+const int peris_IN1 = 8;
+const int peris_IN2 = 7;
+const int peris_STBY = 10;
+const int peris_PWM = 5;
+
 // Variabel Pewaktuan & Status
 unsigned long previousMillis = 0;
 const long interval = 250; // 0.25 detik (250 milidetik)
@@ -26,6 +32,8 @@ void setup() {
   // Konfigurasi Pin Mode
   pinMode(pinAnalog, INPUT);
   pinMode(pinDigital, INPUT);
+  pinMode(peris_IN1, OUTPUT); pinMode(peris_IN2, OUTPUT);
+  pinMode(peris_STBY, OUTPUT); pinMode(peris_PWM, OUTPUT);
 
   // Inisialisasi OLED (Alamat default umumnya 0x3C)
   if(!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) { 
@@ -56,6 +64,7 @@ void loop() {
     } else if (command == 'E') { 
       isRunning = false;
       tampilkanStandbyOLED();
+      hentikanSistem();
     }
   }
 
@@ -67,6 +76,7 @@ void loop() {
     
     // Menghitung voltase untuk ditampilkan di OLED
     float voltase = (nilaiAnalog * 5.0) / 1023.0;
+    jalankanSistem();
     
     // Update Tampilan OLED
     display.clearDisplay();
@@ -93,6 +103,25 @@ void loop() {
       Serial.println(nilaiDigital); 
     }
   }
+}
+
+void jalankanSistem() {
+  isRunning = true;
+
+  // Peristaltik ON
+  digitalWrite(peris_STBY, HIGH);
+  digitalWrite(peris_IN1, HIGH);
+  digitalWrite(peris_IN2, LOW);
+  analogWrite(peris_PWM, 100);
+}
+
+void hentikanSistem() {
+  isRunning = false;
+  digitalWrite(peris_STBY, LOW);
+  digitalWrite(peris_IN1, LOW);
+  digitalWrite(peris_IN2, LOW);
+  analogWrite(peris_PWM, 0);
+  delay(1000);
 }
 
 void tampilkanStandbyOLED() {
