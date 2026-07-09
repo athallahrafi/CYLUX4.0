@@ -31,7 +31,7 @@ void setup() {
   
   // Konfigurasi Pin Mode
   pinMode(pinAnalog, INPUT);
-  pinMode(pinDigital, INPUT);
+  pinMode(pinDigital, INPUT_PULLUP);
   pinMode(peris_IN1, OUTPUT); pinMode(peris_IN2, OUTPUT);
   pinMode(peris_STBY, OUTPUT); pinMode(peris_PWM, OUTPUT);
 
